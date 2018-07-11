@@ -12,4 +12,4 @@
 
   cd target
 
-  java -jar java-webshop-parser-0.1-jar-with-dependencies.jar "keyword"
+  java -jar java-webshop-parser-0.3-jar-with-dependencies.jar "keyword"
