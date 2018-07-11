@@ -8,11 +8,13 @@ public abstract class AbstractParser extends Thread {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
     protected void threadSleep() {
-        try {
-            logger.debug("Waiting ....");
-            Thread.sleep(Utils.sleepTime());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (Utils.cheating) {
+            try {
+                logger.debug("Waiting ....");
+                Thread.sleep(Utils.sleepTime());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

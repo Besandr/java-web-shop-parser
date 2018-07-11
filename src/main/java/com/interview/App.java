@@ -3,6 +3,7 @@ package com.interview;
 
 import com.interview.util.SetsHolder;
 import com.interview.util.SummaryPrinter;
+import com.interview.util.Utils;
 import com.interview.util.XMLWriter;
 import com.interview.parsers.OfferParser;
 import com.interview.service.ServiceParser;
@@ -25,6 +26,7 @@ public class App {
 
 
         if (args.length != 0) {
+            Utils.setCheating(true);
             ServiceParser serviceParser = new ServiceParser(args[0]);
             serviceParser.go();
         }

@@ -64,6 +64,7 @@ public class OfferParser extends AbstractParser {
     }
 
     private void colorPagesFinder() {
+
         Elements colorElements = offerPage.getElementsByClass(Const.COLOR_CLASS_KEY);
         for (Element colorClass : colorElements) {
             Elements color = colorClass.select("a[href]");
@@ -71,6 +72,7 @@ public class OfferParser extends AbstractParser {
             String offerURL = Const.SITE_URL + offerLink;
             restColorPages.add(offerURL);
         }
+
     }
 
     private void offerCreator() {

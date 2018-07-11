@@ -27,7 +27,7 @@ public class XMLWriter {
             jaxbMarshaller.setProperty("com.sun.xml.bind.xmlHeaders", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 
             jaxbMarshaller.marshal(OffersList.getInstance(), file);
-            logger.info("Offers have been written successfully");
+            logger.info("Offers have been written successfully\n");
 
         } catch (JAXBException e) {
             logger.error(e.getMessage() + e.getStackTrace());
