@@ -1,41 +1,40 @@
 package com.interview;
 
 
-import com.interview.model.Offer;
-import com.interview.model.OffersList;
-import com.interview.util.Utils;
-import com.interview.util.XMLConverter;
+import com.interview.util.SetsHolder;
+import com.interview.util.SummaryPrinter;
+import com.interview.util.XMLWriter;
 import com.interview.parsers.OfferParser;
 import com.interview.service.ServiceParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+/**
+ * This app receives a keyword as first argument in the main method
+ * and starts searching related offers on the site "https://www.aboutyou.de".
+ * Found parsed offers storing in the /target/offers.xml
+ * App can try to cheat server bot detection by sleeping each thread with random sleep time.
+ */
 public class App {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
     public static void main(String[] args) {
-        logger.info("Starting");
+        logger.debug("Starting");
 
-        long startTime = System.currentTimeMillis();
-        ServiceParser serviceParser;
+        SummaryPrinter.startCollecting();
+
 
         if (args.length != 0) {
-
-            serviceParser = new ServiceParser(args[0]);
+            ServiceParser serviceParser = new ServiceParser(args[0]);
             serviceParser.go();
         }
 
-        while (!Utils.getThreadsPool().isEmpty()) {}
-        XMLConverter.convert();
+        // Waiting for the ending of execution of all threads
+        while (!SetsHolder.THREADS_POOL.isEmpty()) {}
 
-        for (Offer o :
-                OffersList.getOffers()) {
-            logger.info("Size:  " + o.getSize());
-        }
+        XMLWriter.writeResults();
 
-        long exTime = (System.currentTimeMillis() - startTime) / 1000;
-        logger.info(String.format("Execution time: %d", exTime));
-        logger.info(String.format("Amount of extracted products: %d", Utils.getOfferLinksSet().size()));
+        SummaryPrinter.printSummary();
+
     }
 }

@@ -1,26 +1,38 @@
 package com.interview.util;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
-    private static volatile ConcurrentHashMap mapForSetOfLinks = new ConcurrentHashMap();
-    private static volatile Set<String> offerLinksSet = mapForSetOfLinks.newKeySet();
 
-    private static volatile ConcurrentHashMap mapForThreadsPool = new ConcurrentHashMap();
-    private static volatile Set<Thread> threadsPool = mapForThreadsPool.newKeySet();
 
 
     public static int sleepTime(){
-        int millisTime = (int) (Math.random() * 7000) + 2000;
-        return millisTime;
+        return (int) (Math.random() * 5000) + 2000;
     }
-    public static synchronized Set getOfferLinksSet() {
-        return offerLinksSet;
+//    public static synchronized Set getOfferLinksSet() {
+//        return OFFER_LINKS_SET;
+//    }
+//
+//    public static synchronized Set getThreadsPool() {
+//        return THREADS_POOL;
+//    }
+
+    public static String currencyDefiner(String textWithCurrencySign) {
+        String currency = null;
+        if (textWithCurrencySign.contains("€")) {
+            currency = "EUR";
+        }
+        if (textWithCurrencySign.contains("CHF")) {
+            currency = "CHF";
+        }
+        return currency;
     }
 
-    public static synchronized Set getThreadsPool() {
-        return threadsPool;
+    public static BigDecimal getCostFromString(String cost) {
+        return new BigDecimal(cost.replaceAll("[^0-9,]*", "")
+                .replace("," , "."));
     }
 }

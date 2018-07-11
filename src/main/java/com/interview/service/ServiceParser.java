@@ -1,7 +1,7 @@
 package com.interview.service;
 
 import com.interview.util.Const;
-import com.interview.util.Utils;
+import com.interview.util.SetsHolder;
 import com.interview.parsers.SearchResultParser;
 
 /**
@@ -22,13 +22,8 @@ public class ServiceParser{
         for (String category : Const.CATEGORIES) {
             String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
             Thread searchResultParser = new SearchResultParser(searchRequest, true);
-            Utils.getThreadsPool().add(searchResultParser);
+            SetsHolder.THREADS_POOL.add(searchResultParser);
             searchResultParser.start();
         }
-
     }
-
-
-
-
 }

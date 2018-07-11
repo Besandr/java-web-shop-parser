@@ -17,14 +17,13 @@ public class Const {
     public static final String PRICE_KEY = "3aCVn";
     public static final String INITIAL_PRICE_KEY = "PSBGK";
     public static final String DESCRIPTION_KEY = "3qTt";
-    public static final String[] DESCRIPTION_CATEGORIES = {"Design & Extras: ", " Material & Pflegehinweise: ", " Größe & Passform: "};
-    public static final String DESIGNS_AND_EXTRAS_KEY = "3QlT";
-    public static final String MATERIAL_AND_PFLEGEHINWEISE_KEY = "3qTt";
     public static final String ARTICLE_KEYWORD = "Artikel-Nr: ";
     public static final String SHIPPING_COSTS_CLASS = "styles__label--1cfc7";
     public static final String SIZE_KEY = "sWR75";
+    public static final String ONE_SIZE_KEY = "1WC_O";
     public static final String SOLD_SIZE_KEY = "reservieren";
     public static final String PAGE_AMOUNT_KEY = "1Lsj";
     public static final String PAGINATION_URL_PARAM = "&sort=topseller&page=";
+    public static final String SOLD_OUT_PRODUCT_TEXT = "Dieses Produkt ist leider ausverkauft!";
 
 }

@@ -9,15 +9,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
 
-public class XMLConverter {
-    private static final Logger logger = LogManager.getLogger(XMLConverter.class);
+public class XMLWriter {
+    private static final Logger logger = LogManager.getLogger(XMLWriter.class);
 
-    public static void convert() {
-
+    public static void writeResults() {
 
         try {
 
-            File file = new File("./file.xml");
+            File file = new File("./offers.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(OffersList.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 

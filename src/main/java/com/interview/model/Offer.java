@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Offer {
+public class Offer implements Cloneable {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
     private String name;
     private String brand;
@@ -38,24 +38,54 @@ public class Offer {
         savePath = offersList;
     }
 
+    // JAXB(xml) requires a default constructor
     public Offer(){}
 
+    // Constructor for cloning Offer
+    private Offer(String name, String brand, String color, String size,
+                 BigDecimal price, BigDecimal initialPrice,
+                 String currency, String description, String articleID,
+                 BigDecimal shippingCost) {
+        this.name = name;
+        this.brand = brand;
+        this.color = color;
+        this.size = size;
+        this.price = price;
+        this.initialPrice = initialPrice;
+        this.currency = currency;
+        this.description = description;
+        this.articleID = articleID;
+        this.shippingCost = shippingCost;
+    }
 
     public void save(){
         if (!sizes.isEmpty()) {
-            for (int i = 0; i < sizes.size(); i++) {
-                this.size = sizes.get(i);
-                logger.info(i + "  ===  " + this.size);
-                savePath.add(this);
+            size = sizes.get(0);
+            savePath.add(this);
+            // If sizes more than one copying offer, setting new size for it
+            // and saving new instance
+            for (int i = 1; i < sizes.size(); i++) {
+                Offer offerWithOtherSize = offerCopy(this);
+                offerWithOtherSize.size = sizes.get(i);
+                savePath.add(offerWithOtherSize);
             }
         } else {
             savePath.add(this);
         }
-
-//        System.out.println("\n\nobject " + color + " saved!!\n\n");
-//        OutputManager.write(OffersList.getOffers(), "d:\\result.xml");
     }
 
+    private Offer offerCopy (Offer source) {
+        return new Offer(source.name,
+                source.brand,
+                source.color,
+                source.size,
+                source.price,
+                source.initialPrice,
+                source.currency,
+                source.description,
+                source.articleID,
+                source.shippingCost);
 
+    }
 
 }
