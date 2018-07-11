@@ -8,7 +8,9 @@
 # Run this application
   git clone https://github.com/Besandr/java-web-shop-parser.git
 
-  ./mvn clean package
+  cd java-web-shop-parser
+
+  mvn clean package
 
   cd target
 
