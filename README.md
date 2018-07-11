@@ -5,7 +5,7 @@
 
   Parser can try to cheat server bot detection by sleeping each thread with random sleep time.
 
-# Run this project
+# Run this application
   git clone https://github.com/Besandr/java-web-shop-parser.git
 
   ./mvn clean package
