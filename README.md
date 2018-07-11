@@ -7,6 +7,9 @@
 
 # Run this project
   git clone https://github.com/Besandr/java-web-shop-parser.git
+
   ./mvn clean package
+
   cd target
+
   java -jar java-webshop-parser-0.1-jar-with-dependencies.jar "keyword"
