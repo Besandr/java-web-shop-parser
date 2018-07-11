@@ -1,35 +1,34 @@
 package com.interview;
 
-import com.interview.Util.OutputManager;
-import com.interview.Util.Utils;
-import com.interview.model.OffersList;
+
+import com.interview.util.Utils;
+import com.interview.util.XMLConverter;
+import com.interview.parsers.OfferParser;
 import com.interview.service.ServiceParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class App {
+    private static final Logger logger = LogManager.getLogger(OfferParser.class);
+
     public static void main(String[] args) {
+        logger.info("Starting");
+
         long startTime = System.currentTimeMillis();
         ServiceParser serviceParser;
 
-        if (args.length != 0){
+        if (args.length != 0) {
 
             serviceParser = new ServiceParser(args[0]);
-            serviceParser.run();
-//            Thread parseExecutor = new Thread(serviceParser);
-//            parseExecutor.start();
-            // Waiting on finishing parsing for calculating execution time
-            // start results saving and other
-//            try {
-//                parseExecutor.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            serviceParser.go();
         }
 
-        while (!Utils.getthreadsPool().isEmpty()) {}
-        OutputManager.write(OffersList.getOffers(), "d:\\result.xml");
+        while (!Utils.getThreadsPool().isEmpty()) {}
+//        OutputManager.write(OffersList.getOffers(), "d:\\result.xml");
+        XMLConverter.convert();
 
         long exTime = (System.currentTimeMillis() - startTime) / 1000;
-        System.out.println("Execution time: " + exTime);
+        logger.info(String.format("Execution time: %d", exTime));
     }
 }

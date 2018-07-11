@@ -1,6 +1,4 @@
-package com.interview.Util;
-
-import lombok.Getter;
+package com.interview.util;
 
 /** This class contains keys wich need for parsing pages
  *  and contains another entering data

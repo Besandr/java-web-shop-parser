@@ -1,7 +1,7 @@
 //package com.interview.parsers;
 //
-//import com.interview.Util.Const;
-//import com.interview.Util.Utils;
+//import com.interview.util.Const;
+//import com.interview.util.Utils;
 //import org.jsoup.Jsoup;
 //import org.jsoup.nodes.Document;
 //import org.jsoup.nodes.Element;
@@ -28,10 +28,10 @@
 //    }
 //
 //    @Override
-//    public void run() {
+//    public void go() {
 //        System.out.println("\nParsing  " + offerPage.baseUri() + " by  " + this.getClass().getSimpleName());
 //
-////        super.run();
+////        super.go();
 //
 ////        Elements colorElements = offerPage.getElementsByClass(Const.COLOR_CLASS_KEY);
 ////        for (Element colorClass : colorElements) {

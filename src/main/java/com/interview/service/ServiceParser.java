@@ -1,7 +1,7 @@
 package com.interview.service;
 
-import com.interview.Util.Const;
-import com.interview.Util.Utils;
+import com.interview.util.Const;
+import com.interview.util.Utils;
 import com.interview.parsers.SearchResultParser;
 
 /**
@@ -10,7 +10,7 @@ import com.interview.parsers.SearchResultParser;
  * After that it starts three threads for parsing it.
  */
 
-public class ServiceParser implements Runnable {
+public class ServiceParser{
 
     private String keyword;
 
@@ -18,11 +18,11 @@ public class ServiceParser implements Runnable {
         this.keyword = keyword;
     }
 
-    public void run() {
+    public void go() {
         for (String category : Const.CATEGORIES) {
             String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
             Thread searchResultParser = new SearchResultParser(searchRequest, true);
-            Utils.getthreadsPool().add(searchResultParser);
+            Utils.getThreadsPool().add(searchResultParser);
             searchResultParser.start();
         }
 

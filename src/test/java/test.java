@@ -1,4 +1,4 @@
-import com.interview.Util.Utils;
+import com.interview.util.Utils;
 
 public class test {
     public static void main(String[] args) {

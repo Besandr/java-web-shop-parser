@@ -1,7 +1,9 @@
 package com.interview.parsers;
 
-import com.interview.Util.Const;
-import com.interview.Util.Utils;
+import com.interview.util.Const;
+import com.interview.util.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +26,7 @@ import java.util.List;
 
 
 public class SearchResultParser extends AbstractParser {
+    private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
     Document resultsPage;
     private boolean isThisFirstPage;
@@ -40,7 +43,7 @@ public class SearchResultParser extends AbstractParser {
 
     @Override
     public void run() {
-//        super.run();
+        super.run();
         System.out.println("\nParsing  " + resultsPage.baseUri() + " by  " + this.getClass().getSimpleName());
         if (isThisFirstPage) {
             startParsingOtherPages();
@@ -49,7 +52,7 @@ public class SearchResultParser extends AbstractParser {
         if (offerPages.size() != 0) {
             offerParseExecutor();
         }
-        Utils.getthreadsPool().remove(this);
+        Utils.getThreadsPool().remove(this);
     }
 
     private void parseCurrentPageForOfferLinks(){
@@ -69,7 +72,7 @@ public class SearchResultParser extends AbstractParser {
         for (String offerPageURL : offerPages) {
             if (Utils.getOfferLinksSet().add(offerPageURL)) {
                 Thread offerParser = new OfferParser(offerPageURL, true);
-                Utils.getthreadsPool().add(offerParser);
+                Utils.getThreadsPool().add(offerParser);
                 offerParser.start();
             }
         }

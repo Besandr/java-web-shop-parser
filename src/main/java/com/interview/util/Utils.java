@@ -1,4 +1,4 @@
-package com.interview.Util;
+package com.interview.util;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,14 +13,14 @@ public class Utils {
 
 
     public static int sleepTime(){
-        int millisTime = (int) (Math.random() * 5000) + 2000;
+        int millisTime = (int) (Math.random() * 7000) + 2000;
         return millisTime;
     }
     public static synchronized Set getOfferLinksSet() {
         return offerLinksSet;
     }
 
-    public static synchronized Set getthreadsPool() {
+    public static synchronized Set getThreadsPool() {
         return threadsPool;
     }
 }

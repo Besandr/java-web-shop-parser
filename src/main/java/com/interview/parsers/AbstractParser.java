@@ -1,6 +1,6 @@
 package com.interview.parsers;
 
-import com.interview.Util.Utils;
+import com.interview.util.Utils;
 
 public abstract class AbstractParser extends Thread {
     @Override

@@ -1,23 +1,26 @@
 package com.interview.parsers;
 
-import com.interview.Util.Const;
-import com.interview.Util.Utils;
+import com.interview.util.Const;
+import com.interview.util.Utils;
 import com.interview.model.Offer;
 import com.interview.model.OffersList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OfferParser extends AbstractParser {
+    private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
-//    File htmlFile = new File("D:\\1.htm");
+    //    File htmlFile = new File("D:\\1.htm");
+//    String testURL = "https://www.aboutyou.de/p/nike/laufschuh-free-run-gs-3632222";
 
     private Document offerPage;
     private Offer offer;
@@ -30,6 +33,7 @@ public class OfferParser extends AbstractParser {
         try {
             offerPage = Jsoup.connect(offerURL).get();
 //            offerPage = Jsoup.parse(htmlFile, "UTF-8");
+//            offerPage = Jsoup.connect(testURL).get();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +65,7 @@ public class OfferParser extends AbstractParser {
 //                .sizes(parseSizes());
 //        System.out.println(offer);
 //        offer.save();
-        Utils.getthreadsPool().remove(this);
+        Utils.getThreadsPool().remove(this);
     }
 
 
