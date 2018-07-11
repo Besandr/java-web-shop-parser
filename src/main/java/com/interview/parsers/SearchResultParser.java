@@ -44,7 +44,6 @@ public class SearchResultParser extends AbstractParser {
     @Override
     public void run() {
         super.run();
-        System.out.println("\nParsing  " + resultsPage.baseUri() + " by  " + this.getClass().getSimpleName());
         if (isThisFirstPage) {
             startParsingOtherPages();
         }

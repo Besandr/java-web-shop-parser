@@ -52,19 +52,6 @@ public class OfferParser extends AbstractParser {
 
         // Parsing current offer page
         offerCreator();
-
-        //        offer.builder()
-//                .savePath(OffersList.getInstance())
-//                .name(parseName())
-//                .brand(parseBrand())
-//                .color(parseColor())
-//                .price(parsePrice())
-//                .initialPrice(parseInitialPrice())
-//                .articleID(parseArticleID())
-//                .shippingCost(parseShippingCost())
-//                .sizes(parseSizes());
-//        System.out.println(offer);
-//        offer.save();
         Utils.getThreadsPool().remove(this);
     }
 
@@ -149,7 +136,7 @@ public class OfferParser extends AbstractParser {
         String price;
         Elements priceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.PRICE_KEY);
         // Target price tag is always first (and single) element in Elements nameClass
-        // priceText string parrern is "ab "(optionally) with wanted price and currency type
+        // priceText string pattern is "ab "(optionally) with wanted price and currency type
         String priceText = priceDiv.get(0).text();
 
         return getCostFromString(priceText);
@@ -165,6 +152,16 @@ public class OfferParser extends AbstractParser {
         }
         return initialPrice;
     }
+
+//    private String parseCurrency() {
+//        String currency;
+//
+//        Elements priceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.PRICE_KEY);
+//        // Target price tag is always first (and single) element in Elements nameClass
+//        // priceText string pattern is "ab "(optionally) with wanted price and currency type
+//        String priceText = priceDiv.get(0).text();
+//
+//    }
 
     private String parseDescription() {
         String description = null;
@@ -206,10 +203,7 @@ public class OfferParser extends AbstractParser {
                     sizeElements) {
                 // Check for sold out sizes
                 if (!sizeElement.text().contains(Const.SOLD_SIZE_KEY)) {
-                    String[] sizeString = sizeElement.text().trim().split(" ");
-                    // Some offers has additional information before size. Receiving only last one
-                    String size = sizeString[sizeString.length - 1];
-                    sizes.add(size);
+                    sizes.add(sizeElement.text());
                 }
             }
         }

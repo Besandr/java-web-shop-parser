@@ -1,6 +1,8 @@
 package com.interview;
 
 
+import com.interview.model.Offer;
+import com.interview.model.OffersList;
 import com.interview.util.Utils;
 import com.interview.util.XMLConverter;
 import com.interview.parsers.OfferParser;
@@ -25,10 +27,15 @@ public class App {
         }
 
         while (!Utils.getThreadsPool().isEmpty()) {}
-//        OutputManager.write(OffersList.getOffers(), "d:\\result.xml");
         XMLConverter.convert();
+
+        for (Offer o :
+                OffersList.getOffers()) {
+            logger.info("Size:  " + o.getSize());
+        }
 
         long exTime = (System.currentTimeMillis() - startTime) / 1000;
         logger.info(String.format("Execution time: %d", exTime));
+        logger.info(String.format("Amount of extracted products: %d", Utils.getOfferLinksSet().size()));
     }
 }
