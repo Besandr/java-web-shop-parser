@@ -11,7 +11,7 @@ public class Utils {
     public static boolean cheating;
 
     public static int sleepTime(){
-        return (int) (Math.random() * 3000) + 2000;
+        return (int) (Math.random() * 1200) + 500;
     }
 
     public static String currencyDefiner(String textWithCurrencySign) {

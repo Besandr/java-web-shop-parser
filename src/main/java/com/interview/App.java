@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
  * and starts searching related offers on the site "https://www.aboutyou.de".
  * Found parsed offers storing in the /target/offers.xml
  * App can try to cheat server bot detection by sleeping each thread with random sleep time.
+ * Sleep time range sets in Utils.sleepTime() method
  */
 public class App {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
