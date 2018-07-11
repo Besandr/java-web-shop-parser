@@ -1,6 +1,7 @@
 package com.interview.parsers;
 
 import com.interview.Util.Const;
+import com.interview.Util.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,24 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * FirstStepParser receives search request URL and parses it
+ * SearchResultParser receives search request URL and parses it
  * for offer links. Links fills the List of offer pages.
  * Program iterates through the List and starts a thread
  * for parsing each one.
- * Also FirstStepParser looking for number of searching
+ * Also SearchResultParser looking for number of searching
  * result pages. If there are more than one page it runs iteration
- * which starts new thread (FirstStepParser with second param - false)
+ * which starts new thread (SearchResultParser with second param - false)
  * to parse each result page.
  */
 
 
-public class FirstStepParser extends AbstrParser {
+public class SearchResultParser extends AbstractParser {
 
     Document resultsPage;
     private boolean isThisFirstPage;
     List<String> offerPages = new ArrayList<>();
 
-    public FirstStepParser(String searchRequest, boolean isThisFirstPage) {
+    public SearchResultParser(String searchRequest, boolean isThisFirstPage) {
         try{
             resultsPage = Jsoup.connect(searchRequest).get();
             this.isThisFirstPage = isThisFirstPage;
@@ -39,12 +40,15 @@ public class FirstStepParser extends AbstrParser {
 
     @Override
     public void run() {
-        super.run();
+//        super.run();
         System.out.println("\nParsing  " + resultsPage.baseUri() + " by  " + this.getClass().getSimpleName());
         if (isThisFirstPage) {
             startParsingOtherPages();
         }
         parseCurrentPageForOfferLinks();
+        if (offerPages.size() != 0) {
+            offerParseExecutor();
+        }
     }
 
     private void parseCurrentPageForOfferLinks(){
@@ -58,21 +62,13 @@ public class FirstStepParser extends AbstrParser {
                 offerPages.add(linkForSecondStep);
             }
         }
-        if (offerPages.size() != 0) {
-            secondStepExecutor();
-        }
     }
 
-    private void secondStepExecutor() {
-        for (String offerPage : offerPages) {
-            try {
-                Document mainOfferPage = Jsoup.connect(offerPage).get();
-                Thread secondStep = new SecondStepParser(mainOfferPage);
-                secondStep.start();
-
-                ((SecondStepParser) secondStep).threadJoin();
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void offerParseExecutor() {
+        for (String offerPageURL : offerPages) {
+            if (Utils.getOfferLinksSet().add(offerPageURL)) {
+                Thread offerParse = new OfferParser(offerPageURL, true);
+                offerParse.start();
             }
         }
     }
@@ -87,7 +83,7 @@ public class FirstStepParser extends AbstrParser {
            int totalPages = Integer.parseInt(lastElementLinks.get(0).text());
            for (int i = 2; i <= totalPages; i++) {
                String nextPageURL = resultsPage.baseUri() + Const.PAGINATION_URL_PARAM + i;
-               FirstStepParser nextPageParser = new FirstStepParser(nextPageURL, false);
+               SearchResultParser nextPageParser = new SearchResultParser(nextPageURL, false);
                nextPageParser.start();
            }
        }

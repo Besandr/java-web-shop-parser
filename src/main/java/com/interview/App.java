@@ -17,11 +17,11 @@ public class App {
             parseExecutor.start();
             // Waiting on finishing parsing for calculating execution time
             // start results saving and other
-            try {
-                parseExecutor.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                parseExecutor.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
         }
 
         OutputManager.write(OffersList.getOffers(), "d:\\result.xml");

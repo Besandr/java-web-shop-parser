@@ -1,8 +1,7 @@
 package com.interview.service;
 
 import com.interview.Util.Const;
-import com.interview.model.OffersList;
-import com.interview.parsers.FirstStepParser;
+import com.interview.parsers.SearchResultParser;
 
 /**
  * ServiceParser receive keyword, and generates three search request URLs,
@@ -21,7 +20,7 @@ public class ServiceParser implements Runnable {
     public void run() {
         for (String category : Const.CATEGORIES) {
             String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
-            Thread firstStepThread = new FirstStepParser(searchRequest, true);
+            Thread firstStepThread = new SearchResultParser(searchRequest, true);
             firstStepThread.start();
         }
     }

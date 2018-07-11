@@ -31,6 +31,7 @@ public class OutputManager {
                         if (offer.getInitialPrice() != null) {
                             writer.write("  <initial price>" + offer.getInitialPrice() + "</initial price>" + "\n");
                         }
+                        writer.write("  <description>" + offer.getDescription() + "</description>" + "\n");
                         writer.write("  <articleID>" + offer.getArticleID() + "</articleID>" + "\n");
                         writer.write("  <shipping cost>" + offer.getShippingCost() + "</shipping cost>" + "\n");
                         writer.write(" </offer>\n");
@@ -44,6 +45,7 @@ public class OutputManager {
                     if (offer.getInitialPrice() != null) {
                         writer.write("<  initial price>" + offer.getInitialPrice() + "</initial price>" + "\n");
                     }
+                    writer.write("  <description>" + offer.getDescription() + "</description>" + "\n");
                     writer.write("<  articleID>" + offer.getArticleID() + "</articleID>" + "\n");
                     writer.write("<  shipping cost>" + offer.getShippingCost() + "</shipping cost>" + "\n");
                     writer.write(" </offer>\n");

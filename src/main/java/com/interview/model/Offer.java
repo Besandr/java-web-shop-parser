@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -14,11 +15,11 @@ public class Offer {
     private String name;
     private String brand;
     private String color;
-    private String price;
-    private String initialPrice;
+    private BigDecimal price;
+    private BigDecimal initialPrice;
     private String description;
     private String articleID;
-    private String shippingCost;
+    private BigDecimal shippingCost;
     private List<String> sizes;
 
     private OffersList savePath;
@@ -30,6 +31,7 @@ public class Offer {
 
     public void save(){
         savePath.add(this);
+//        System.out.println("\n\nobject " + color + " saved!!\n\n");
 //        OutputManager.write(OffersList.getOffers(), "d:\\result.xml");
     }
 
