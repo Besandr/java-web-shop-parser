@@ -61,6 +61,7 @@ public class OfferParser extends AbstractParser {
 //                .sizes(parseSizes());
 //        System.out.println(offer);
 //        offer.save();
+        Utils.getthreadsPool().remove(this);
     }
 
 

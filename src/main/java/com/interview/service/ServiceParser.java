@@ -1,6 +1,7 @@
 package com.interview.service;
 
 import com.interview.Util.Const;
+import com.interview.Util.Utils;
 import com.interview.parsers.SearchResultParser;
 
 /**
@@ -20,9 +21,11 @@ public class ServiceParser implements Runnable {
     public void run() {
         for (String category : Const.CATEGORIES) {
             String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
-            Thread firstStepThread = new SearchResultParser(searchRequest, true);
-            firstStepThread.start();
+            Thread searchResultParser = new SearchResultParser(searchRequest, true);
+            Utils.getthreadsPool().add(searchResultParser);
+            searchResultParser.start();
         }
+
     }
 
 

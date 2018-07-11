@@ -49,6 +49,7 @@ public class SearchResultParser extends AbstractParser {
         if (offerPages.size() != 0) {
             offerParseExecutor();
         }
+        Utils.getthreadsPool().remove(this);
     }
 
     private void parseCurrentPageForOfferLinks(){
@@ -67,8 +68,9 @@ public class SearchResultParser extends AbstractParser {
     private void offerParseExecutor() {
         for (String offerPageURL : offerPages) {
             if (Utils.getOfferLinksSet().add(offerPageURL)) {
-                Thread offerParse = new OfferParser(offerPageURL, true);
-                offerParse.start();
+                Thread offerParser = new OfferParser(offerPageURL, true);
+                Utils.getthreadsPool().add(offerParser);
+                offerParser.start();
             }
         }
     }
