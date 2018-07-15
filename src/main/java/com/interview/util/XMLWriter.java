@@ -30,7 +30,7 @@ public class XMLWriter {
             logger.info("Offers have been written successfully\n");
 
         } catch (JAXBException e) {
-            logger.error(e.getMessage() + e.getStackTrace());
+            logger.error(e.getMessage());
         }
     }
 

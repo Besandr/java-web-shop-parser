@@ -3,7 +3,6 @@ package com.interview.parsers;
 import com.interview.util.Const;
 import com.interview.util.SetsHolder;
 import com.interview.util.SummaryPrinter;
-import com.interview.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -23,7 +22,7 @@ import java.util.List;
  * Also SearchResultParser looking for amount of searching
  * result pages. If there are more than one page it runs iteration
  * which starts new thread (SearchResultParser with second param - false)
- * to parse each result page.
+ * for parsing each result page.
  */
 
 
@@ -39,13 +38,13 @@ public class SearchResultParser extends AbstractParser {
             resultsPage = Jsoup.connect(searchRequest).get();
             this.isThisFirstPage = isThisFirstPage;
         } catch (IOException e) {
-            logger.error(e.getMessage() + e.getStackTrace());
+            logger.error(e.getMessage());
         }
     }
 
     @Override
     public void run() {
-        threadSleep();
+        startDelay();
         if (isThisFirstPage) {
             startParsingOtherPages();
         }
@@ -72,9 +71,10 @@ public class SearchResultParser extends AbstractParser {
     private void offerParseExecutor() {
         for (String offerPageURL : offerPages) {
             if (SetsHolder.OFFER_LINKS_SET.add(offerPageURL)) {
-                Thread offerParser = new OfferParser(offerPageURL, true);
+                OfferParser offerParser = new OfferParser(offerPageURL, true);
                 SetsHolder.THREADS_POOL.add(offerParser);
                 offerParser.start();
+                offerParser.threadJoin();
             }
         }
     }
@@ -86,12 +86,19 @@ public class SearchResultParser extends AbstractParser {
        if (elements.size() > 1) {
            Element lastElement = elements.get(elements.size() - 1);
            Elements lastElementLinks = lastElement.getElementsByAttribute("href");
+
            int totalPages = Integer.parseInt(lastElementLinks.get(0).text());
            SummaryPrinter.setHttpSearchRequestAmount(totalPages);
+
+           String lastResultPageLink = lastElementLinks.get(0).attr("href");
+           String anotherResultPageLink = lastResultPageLink.replace("page=" + totalPages, "page=");
+
            for (int i = 2; i <= totalPages; i++) {
-               String nextPageURL = resultsPage.baseUri() + Const.PAGINATION_URL_PARAM + i;
+               String nextPageURL = Const.SITE_URL + anotherResultPageLink + i;
                SearchResultParser nextPageParser = new SearchResultParser(nextPageURL, false);
+               SetsHolder.THREADS_POOL.add(nextPageParser);
                nextPageParser.start();
+               nextPageParser.threadJoin();
            }
        }
     }

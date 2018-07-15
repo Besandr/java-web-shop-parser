@@ -1,9 +1,10 @@
 package com.interview.parsers;
 
+import com.interview.model.OfferWithSizes;
+import com.interview.parsers.offerpropertiesparsers.PropertyParser;
+import com.interview.service.AppSettings;
 import com.interview.util.Const;
 import com.interview.util.SetsHolder;
-import com.interview.util.Utils;
-import com.interview.model.Offer;
 import com.interview.model.OffersList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +23,23 @@ public class OfferParser extends AbstractParser {
     private Document offerPage;
     private boolean isExtractionRequired;
     private List<String> restColorPages = new ArrayList<>();
+    private String offerURL;
 
 
-    public OfferParser (String offerURL, boolean isExtractionRequired){
+    OfferParser (String offerURL, boolean isExtractionRequired){
         this.isExtractionRequired = isExtractionRequired;
         try {
-            offerPage = Jsoup.connect(offerURL).get();
+            this.offerURL = offerURL;
+            // Sometimes reading timeout not enough for getting the page.
+            // So this loop makes ten tries to connect and get the http page
+            // If all tries failed the run method will interrupt current thread
+            for (int i = 0; offerPage == null && i < 10; i++) {
+                offerPage = Jsoup.connect(offerURL).get();
+            }
+
         } catch (IOException e) {
-            logger.error(e.getMessage() + e.getStackTrace());
+            logger.error(e.getMessage());
+            logger.error("OfferParser constructor didn't receive the http page with URL : " + offerURL);
         }
     }
 
@@ -38,7 +47,13 @@ public class OfferParser extends AbstractParser {
     @Override
     public void run() {
 
-        threadSleep();
+        startDelay();
+
+        if (offerPage == null) {
+            logger.error("Current thread didn't receive the http page with URL :   " + offerURL);
+            SetsHolder.THREADS_POOL.remove(this);
+            Thread.currentThread().interrupt();
+        }
 
         if (isExtractionRequired) {
             colorPagesFinder();
@@ -46,7 +61,7 @@ public class OfferParser extends AbstractParser {
         }
         // Parsing current offer page
         if (isOfferActive()) {
-            offerCreator();
+            createOffer();
         }
         SetsHolder.THREADS_POOL.remove(this);
     }
@@ -54,10 +69,13 @@ public class OfferParser extends AbstractParser {
 
     private void restColorsParseStarter() {
         if (!restColorPages.isEmpty()) {
-            for (int i = 0; i < restColorPages.size(); i++) {
-                if (SetsHolder.OFFER_LINKS_SET.add(restColorPages.get(i))) {
-                    Thread offerParser = new OfferParser(restColorPages.get(i), false);
+//            for (int i = 0; i < restColorPages.size(); i++) {
+            for (String anotherColorPage : restColorPages) {
+                if (SetsHolder.OFFER_LINKS_SET.add(anotherColorPage)) {
+                    OfferParser offerParser = new OfferParser(anotherColorPage, false);
+                    SetsHolder.THREADS_POOL.add(offerParser);
                     offerParser.start();
+                    offerParser.threadJoin();
                 }
             }
         }
@@ -72,142 +90,17 @@ public class OfferParser extends AbstractParser {
             String offerURL = Const.SITE_URL + offerLink;
             restColorPages.add(offerURL);
         }
-
     }
 
-    private void offerCreator() {
+    private void createOffer() {
         logger.debug(String.format("\nParsing  + %s", offerPage.baseUri()));
-        Offer offer = new Offer(OffersList.getInstance());
-        offer.setName(parseName());
-        offer.setBrand(parseBrand());
-        offer.setColor(parseColor());
-        offer.setPrice(parsePrice());
-        offer.setInitialPrice(parseInitialPrice());
-        offer.setCurrency(parseCurrency());
-        offer.setDescription(parseDescription());
-        offer.setArticleID(parseArticleID());
-        offer.setShippingCost(parseShippingCost());
-        offer.setSizes(parseSizes());
-        offer.save();
-    }
 
-    private String parseName() {
-        String name;
-        Elements nameClass = offerPage.getElementsByClass(Const.NAME_CLASS);
-        String[] brandAndName = nameClass.get(0).text().split("[|]"); // Target brand&name text is always first element in Elements nameClass
-        name = brandAndName[1].trim();                     // brand&name string pattern is: "Produktinfos: offerBrand | offerName"
-        return name;
-    }
-
-    private String parseBrand() {
-        String brand;
-        Elements nameClass = offerPage.getElementsByClass(Const.BRAND_CLASS);
-        // Target brand&name text is always first (and single) element in Elements nameClass
-        // brand&name string parrern is: "Produktinfos: offerBrand | offerName"
-        String[] brandAndName = nameClass.get(0).text().split("[|]");
-        int colonIndex = brandAndName[0].indexOf(":");
-        brand = brandAndName[0].substring(colonIndex + 1).trim();
-        return brand;
-    }
-
-    private String parseColor() {
-        String color;
-        String colorTitleTag = offerPage.title();
-        //Title pattern is "offerBrand offerName in offerColor | ABOUT YOU"
-        //There is no split symbols between Brand and Name so parsing for them in title is too risky
-        //I parse only color here
-        String colorAndSite = colorTitleTag.split(" in ")[1];
-        color = colorAndSite.split("[|]")[0].trim();
-
-        return color;
-    }
-
-    private BigDecimal parsePrice() {
-
-        Elements priceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.PRICE_KEY);
-        // Target price tag is always first (and single) element in Elements nameClass
-        // priceText string pattern is "ab "(optionally) with wanted price and currency type
-        String priceText = priceDiv.get(0).text();
-
-        return Utils.getCostFromString(priceText);
-    }
-
-    private BigDecimal parseInitialPrice() {
-        BigDecimal initialPrice = null;
-        // Some offers doesn't have an initial price, so default return value is null
-        // But if it has, the div tag will contain only text with initial Price
-        Elements initialPriceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.INITIAL_PRICE_KEY);
-        if (initialPriceDiv.size() != 0) {
-            initialPrice = Utils.getCostFromString(initialPriceDiv.get(0).text());
-        }
-        return initialPrice;
-    }
-
-    private String parseCurrency() {
-
-        Elements priceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.PRICE_KEY);
-        // Target price tag is always first (and single) element in Elements nameClass
-        // priceText string pattern is "ab "(optionally) with wanted price and currency type.
-        // Parsing for price string and passing it to the Util method for defining price currency
-        String priceText = priceDiv.get(0).text();
-
-        return Utils.currencyDefiner(priceText);
-    }
-
-    private String parseDescription() {
-
-        String description = null;
-        Elements descr = offerPage.getElementsByAttributeValueContaining("class", Const.DESCRIPTION_KEY);
-        if (descr.size() != 0) {
-            //Receiving the text of description and removing the redundant ArticleID from it
-            description = descr.text().
-                    replace(Const.ARTICLE_KEYWORD + parseArticleID(), "").
-                    trim();
-        }
-        return description;
-    }
-
-    private String parseArticleID() {
-
-        String articleID;
-        // Target tag is unique and it has a text field filled with such pattern: "Artikel-Nr: offerArticleID"
-        Elements articleElement = offerPage.getElementsContainingOwnText(Const.ARTICLE_KEYWORD);
-        articleID = articleElement.get(0).text().split(":")[1].trim();
-        return articleID;
-    }
-
-    private BigDecimal parseShippingCost() {
-
-        BigDecimal shippingCost;
-        Elements shipCostElement = offerPage.getElementsByClass(Const.SHIPPING_COSTS_CLASS);
-        // The first element of shipCostElement contains the target string with shipping cost
-        shippingCost = Utils.getCostFromString(shipCostElement.get(0).text());
-
-        return shippingCost;
-    }
-
-    private List<String> parseSizes() {
-
-        ArrayList<String> sizes = new ArrayList<>();
-        Elements sizeElements = offerPage.getElementsByAttributeValueContaining("class", Const.SIZE_KEY);
-        if (!sizeElements.isEmpty()) {
-            for (Element sizeElement :
-                    sizeElements) {
-                // Check for sold out sizes
-                if (!sizeElement.text().contains(Const.SOLD_SIZE_KEY)) {
-                    sizes.add(sizeElement.text());
-                }
-            }
-        } else {
-            // If upper step didn't find sizes then offer has only one size (like lipstick, perfume or bag)
-            // Lets find it
-            sizeElements = offerPage.getElementsByAttributeValueContaining("class", Const.ONE_SIZE_KEY);
-            if (!sizeElements.isEmpty()) {
-                sizes.add(sizeElements.get(0).text());
-            }
+        OfferWithSizes offerWithSizes = new OfferWithSizes(OffersList.getInstance());
+        for (PropertyParser parser : AppSettings.propertiesList) {
+            offerWithSizes.setProperty(parser.parse(offerPage));
         }
 
-        return sizes;
+        offerWithSizes.save();
     }
 
     private boolean isOfferActive() {

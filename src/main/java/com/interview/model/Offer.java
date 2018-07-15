@@ -1,15 +1,16 @@
 package com.interview.model;
 
 
+import com.interview.model.properties.*;
 import com.interview.parsers.OfferParser;
+import com.interview.util.outputadapters.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.*;
-import java.math.BigDecimal;
-import java.util.List;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @Getter
 @Setter
@@ -17,35 +18,35 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Offer implements Cloneable {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
-    private String name;
-    private String brand;
-    private String color;
-    private String size;
-    private BigDecimal price;
-    private BigDecimal initialPrice;
-    private String currency;
-    private String description;
-    private String articleID;
-    private BigDecimal shippingCost;
-    @XmlTransient
-    private List<String> sizes;
 
+    @XmlJavaTypeAdapter(NameAdapter.class)
+    private Name name;
+    @XmlJavaTypeAdapter(BrandAdapter.class)
+    private Brand brand;
+    @XmlJavaTypeAdapter(ColorAdapter.class)
+    private Color color;
+    @XmlJavaTypeAdapter(SizeAdapter.class)
+    private Size size;
+    @XmlJavaTypeAdapter(PriceAdapter.class)
+    private Price price;
+    @XmlJavaTypeAdapter(InitialPriceAdapter.class)
+    private InitialPrice initialPrice;
+    @XmlJavaTypeAdapter(CurrencyAdapter.class)
+    private Currency currency;
+    @XmlJavaTypeAdapter(DescriptionAdapter.class)
+    private Description description;
+    @XmlJavaTypeAdapter(ArticleIDAdapter.class)
+    private ArticleID articleID;
+    @XmlJavaTypeAdapter(ShippingCostAdapter.class)
+    private ShippingCost shippingCost;
 
     @XmlTransient
     private OffersList savePath;
 
-    public Offer(OffersList offersList) {
-        savePath = offersList;
-    }
-
     // JAXB(xml) requires a default constructor
     public Offer(){}
 
-    // Constructor for cloning Offer
-    private Offer(String name, String brand, String color, String size,
-                 BigDecimal price, BigDecimal initialPrice,
-                 String currency, String description, String articleID,
-                 BigDecimal shippingCost) {
+    Offer(Name name, Brand brand, Color color, Size size, Price price, InitialPrice initialPrice, Currency currency, Description description, ArticleID articleID, ShippingCost shippingCost) {
         this.name = name;
         this.brand = brand;
         this.color = color;
@@ -58,34 +59,10 @@ public class Offer implements Cloneable {
         this.shippingCost = shippingCost;
     }
 
-    public void save(){
-        if (!sizes.isEmpty()) {
-            size = sizes.get(0);
-            savePath.add(this);
-            // If sizes more than one copying offer, setting new size for it
-            // and saving new instance
-            for (int i = 1; i < sizes.size(); i++) {
-                Offer offerWithOtherSize = offerCopy(this);
-                offerWithOtherSize.size = sizes.get(i);
-                savePath.add(offerWithOtherSize);
-            }
-        } else {
-            savePath.add(this);
+    public void setProperty(Property property) {
+        if (property instanceof Name) {
+            name = (Name) property;
         }
-    }
-
-    private Offer offerCopy (Offer source) {
-        return new Offer(source.name,
-                source.brand,
-                source.color,
-                source.size,
-                source.price,
-                source.initialPrice,
-                source.currency,
-                source.description,
-                source.articleID,
-                source.shippingCost);
-
     }
 
 }

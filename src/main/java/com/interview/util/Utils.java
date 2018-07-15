@@ -1,14 +1,13 @@
 package com.interview.util;
 
-import lombok.Setter;
 
 import java.math.BigDecimal;
 
 
 public class Utils {
 
-    @Setter
-    public static boolean cheating;
+//    @Setter
+//    public static boolean cheating;
 
     public static int sleepTime(){
         return (int) (Math.random() * 1200) + 500;

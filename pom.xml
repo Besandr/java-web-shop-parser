@@ -6,7 +6,7 @@
 
     <groupId>parsers</groupId>
     <artifactId>java-webshop-parser</artifactId>
-    <version>0.3</version>
+    <version>0.5</version>
 
     <packaging>jar</packaging>
     <properties>
