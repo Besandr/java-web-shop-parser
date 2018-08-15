@@ -1,7 +1,11 @@
 # java-web-shop-parser
 
-This app receives a keyword as first argument in the main method
-and starts searching related offers on the site "https://www.aboutyou.de".
+This app is a parser which extracts product information from the following web shop:
+http://www.aboutyou.de
+
+To do so the parser must be executed with a keyword as an argument. It extracts data which can be found on the shop website by typing the keyword into the
+search bar. 
+
 Found parsed offers after parsing all offer pages stored in the /target/offers.xml
 
 App can try to cheat server bot detection by delaying the start of each thread with
@@ -20,8 +24,5 @@ By default app starts in multi-thread mode with start delay in a 500-1200 millis
 
     java -jar java-webshop-parser-0.5-jar-with-dependencies.jar "keyword"
     
-# Release notes
 
-Previous version of program(from wednesday 11/07) can be found by tag "v.0.3"
-This is the new release with found bugs fixed, added app settings and few comments.
  
