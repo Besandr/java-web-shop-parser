@@ -1,10 +1,16 @@
 package com.besandr.model;
 
 import com.besandr.model.properties.*;
+import com.besandr.util.SetsHolder;
 import com.besandr.util.resultwriters.XMLWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/** OfferWithSizes contains the unique offer with one color and with
+ * the set of sizes.
+ * While saving the offer OfferWithSizes creates one unique offer per each size
+ * from the set of sizes.
+ */
 
 public class OfferWithSizes {
 
@@ -79,6 +85,7 @@ public class OfferWithSizes {
                         shippingCost
                 );
                 XMLWriter.writeOffer(offer);
+                SetsHolder.offersCounter.incrementAndGet();
             }
         }
     }

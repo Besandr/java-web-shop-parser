@@ -4,7 +4,6 @@ import com.besandr.parsers.OfferParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.NumberFormat;
 
 
 public class SummaryPrinter {
@@ -14,7 +13,6 @@ public class SummaryPrinter {
     private static int httpSearchRequestAmount = 1;
 
     private static long startTime;
-    private static NumberFormat format = NumberFormat.getInstance();
 
     public static void printSummary() {
 
@@ -24,7 +22,7 @@ public class SummaryPrinter {
         logger.info(String.format("Amount of triggered HTTP request: %d", httpSearchRequestAmount));
 
         logger.info(String.format("Execution time: %d seconds", exTime));
-//        logger.info(String.format("Amount of extracted products: %d", OffersList.getInstance().getOffers().size()));
+        logger.info(String.format("Amount of extracted products: %d", SetsHolder.offersCounter.get()));
 
     }
 
