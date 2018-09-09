@@ -5,7 +5,6 @@ import com.besandr.parsers.offerpropertiesparsers.PropertyParser;
 import com.besandr.service.AppSettings;
 import com.besandr.util.Const;
 import com.besandr.util.SetsHolder;
-import com.besandr.model.OffersList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -95,7 +94,7 @@ public class OfferParser extends AbstractParser {
     private void createOffer() {
         logger.debug(String.format("\nParsing  + %s", offerPage.baseUri()));
 
-        OfferWithSizes offerWithSizes = new OfferWithSizes(OffersList.getInstance());
+        OfferWithSizes offerWithSizes = new OfferWithSizes();
         for (PropertyParser parser : AppSettings.propertiesList) {
             offerWithSizes.setProperty(parser.parse(offerPage));
         }

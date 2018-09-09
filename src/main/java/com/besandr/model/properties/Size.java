@@ -12,4 +12,9 @@ public class Size implements Property {
     public String toString() {
         return size;
     }
+
+    @Override
+    public String getName() {
+        return "size";
+    }
 }

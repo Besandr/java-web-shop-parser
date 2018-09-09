@@ -12,4 +12,9 @@ public class Currency implements Property {
     public String toString() {
         return currency;
     }
+
+    @Override
+    public String getName() {
+        return "currency";
+    }
 }

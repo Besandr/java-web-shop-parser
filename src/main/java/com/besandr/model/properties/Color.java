@@ -12,4 +12,9 @@ public class Color implements Property {
     public String toString() {
         return color;
     }
+
+    @Override
+    public String getName() {
+        return "color";
+    }
 }

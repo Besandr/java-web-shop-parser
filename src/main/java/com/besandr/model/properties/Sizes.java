@@ -19,4 +19,9 @@ public class Sizes implements Property {
     public List<Size> getSizes(){
         return sizes;
     }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -26,6 +26,8 @@ public class InitialPriceParser implements PropertyParser {
             }
             initialPrice = maxInitPrice;
         }
+
         return new InitialPrice(initialPrice);
+
     }
 }

@@ -1,12 +1,10 @@
 package com.besandr.model.properties;
 
-import lombok.Getter;
 
 import java.math.BigDecimal;
 
 public class Price implements Property {
 
-    @Getter
     private BigDecimal price;
 
     public Price(Object price) {
@@ -16,9 +14,17 @@ public class Price implements Property {
 
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
 
     @Override
     public String toString() {
         return price.toString();
+    }
+
+    @Override
+    public String getName() {
+        return "price";
     }
 }

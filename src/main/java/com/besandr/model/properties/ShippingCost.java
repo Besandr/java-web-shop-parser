@@ -17,4 +17,9 @@ public class ShippingCost implements Property {
     public String toString() {
         return shippingCost.toString();
     }
+
+    @Override
+    public String getName() {
+        return "shippingCost";
+    }
 }

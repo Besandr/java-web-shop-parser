@@ -1,12 +1,10 @@
 package com.besandr.model.properties;
 
-import lombok.Getter;
 
 import java.math.BigDecimal;
 
 public class InitialPrice implements Property {
 
-    @Getter
     private BigDecimal initialPrice;
 
     public InitialPrice(Object initialPrice) {
@@ -15,9 +13,21 @@ public class InitialPrice implements Property {
         }
     }
 
+    public BigDecimal getInitialPrice() {
+        if (initialPrice != null) {
+            return initialPrice;
+        } else { return null; }
+    }
 
     @Override
     public String toString() {
-        return initialPrice.toString();
+        if (initialPrice != null) {
+            return initialPrice.toString();
+        } else { return "";}
+    }
+
+    @Override
+    public String getName() {
+        return "initialPrice";
     }
 }

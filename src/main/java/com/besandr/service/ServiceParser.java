@@ -3,6 +3,7 @@ package com.besandr.service;
 import com.besandr.util.Const;
 import com.besandr.util.SetsHolder;
 import com.besandr.parsers.SearchResultParser;
+import com.besandr.util.resultwriters.XMLWriter;
 
 /**
  * ServiceParser receive keyword, and generates three search request URLs,
@@ -19,6 +20,9 @@ public class ServiceParser{
     }
 
     public void go() {
+
+        XMLWriter.writeHeaderElement();
+
         for (String category : Const.CATEGORIES) {
             String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
             Thread searchResultParser = new SearchResultParser(searchRequest, true);

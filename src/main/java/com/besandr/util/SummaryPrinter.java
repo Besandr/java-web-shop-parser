@@ -1,8 +1,6 @@
 package com.besandr.util;
 
-import com.besandr.model.OffersList;
 import com.besandr.parsers.OfferParser;
-import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,12 +20,11 @@ public class SummaryPrinter {
 
         long exTime = (System.currentTimeMillis() - startTime) / 1000;
 
-        addHttpRequestAmoutn(SetsHolder.OFFER_LINKS_SET.size());
+        addHttpRequestAmount(SetsHolder.OFFER_LINKS_SET.size());
         logger.info(String.format("Amount of triggered HTTP request: %d", httpSearchRequestAmount));
 
         logger.info(String.format("Execution time: %d seconds", exTime));
-        logger.info(String.format("Max memory usage: %s kilobytes", format.format(MemoryUsage.getMaxMemory() / 1024)));
-        logger.info(String.format("Amount of extracted products: %d", OffersList.getInstance().getOffers()));
+//        logger.info(String.format("Amount of extracted products: %d", OffersList.getInstance().getOffers().size()));
 
     }
 
@@ -36,7 +33,7 @@ public class SummaryPrinter {
         MemoryUsage.startControl();
     }
 
-    public static void addHttpRequestAmoutn(int amount) {
+    public static void addHttpRequestAmount(int amount) {
         httpSearchRequestAmount += amount;
     }
 }

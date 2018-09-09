@@ -12,4 +12,9 @@ public class Description implements Property {
     public String toString() {
         return description;
     }
+
+    @Override
+    public String getName() {
+        return "description";
+    }
 }

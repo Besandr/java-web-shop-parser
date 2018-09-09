@@ -4,9 +4,9 @@ package com.besandr;
 import com.besandr.service.AppSettings;
 import com.besandr.util.SetsHolder;
 import com.besandr.util.SummaryPrinter;
-import com.besandr.util.XMLWriter;
 import com.besandr.parsers.OfferParser;
 import com.besandr.service.ServiceParser;
+import com.besandr.util.resultwriters.XMLWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +42,7 @@ public class App {
         // Waiting for the ending of execution of all threads
         while (!SetsHolder.THREADS_POOL.isEmpty()) {}
 
-        XMLWriter.writeResults();
+        XMLWriter.writeEndElement();
 
         SummaryPrinter.printSummary();
 

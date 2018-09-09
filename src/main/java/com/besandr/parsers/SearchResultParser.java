@@ -88,7 +88,7 @@ public class SearchResultParser extends AbstractParser {
            Elements lastElementLinks = lastElement.getElementsByAttribute("href");
 
            int totalPages = Integer.parseInt(lastElementLinks.get(0).text());
-           SummaryPrinter.addHttpRequestAmoutn(totalPages - 1);
+           SummaryPrinter.addHttpRequestAmount(totalPages - 1);
 
            String lastResultPageLink = lastElementLinks.get(0).attr("href");
            String anotherResultPageLink = lastResultPageLink.replace("page=" + totalPages, "page=");

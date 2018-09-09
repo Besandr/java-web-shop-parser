@@ -12,4 +12,9 @@ public class Brand implements Property {
     public String toString() {
         return brand;
     }
+
+    @Override
+    public String getName() {
+        return "brand";
+    }
 }
