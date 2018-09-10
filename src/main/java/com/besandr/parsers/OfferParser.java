@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**The offer may to contain different colors with personal URLs (and personal sizes)
+ * When the OfferParser parses the offer page at the first time it seeks different colors
+ * of current offer. And if it finds it, starts new OfferParser for another colors (with second
+ * parameter in constructor = false)
+ */
 public class OfferParser extends AbstractParser {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
@@ -25,20 +30,19 @@ public class OfferParser extends AbstractParser {
     private String offerURL;
 
 
-    OfferParser (String offerURL, boolean isExtractionRequired){
+    OfferParser (String offerURL, boolean isExtractionRequired) throws IOException {
         this.isExtractionRequired = isExtractionRequired;
-        try {
-            this.offerURL = offerURL;
-            // Sometimes reading timeout not enough for getting the page.
-            // So this loop makes ten tries to connect and get the http page
-            // If all tries failed the run method will interrupt current thread
-            for (int i = 0; offerPage == null && i < 10; i++) {
-                offerPage = Jsoup.connect(offerURL).get();
-            }
 
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            logger.error("OfferParser constructor didn't receive the http page with URL : " + offerURL);
+        this.offerURL = offerURL;
+        // Sometimes reading timeout not enough for getting the page.
+        // So this loop makes ten tries to connect and get the http page
+        // If all tries failed the run method will interrupt current thread
+        for (int i = 0; offerPage == null && i < 10; i++) {
+            try {
+                offerPage = Jsoup.connect(offerURL).get();
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 
@@ -71,10 +75,15 @@ public class OfferParser extends AbstractParser {
 //            for (int i = 0; i < restColorPages.size(); i++) {
             for (String anotherColorPage : restColorPages) {
                 if (SetsHolder.OFFER_LINKS_SET.add(anotherColorPage)) {
-                    OfferParser offerParser = new OfferParser(anotherColorPage, false);
-                    SetsHolder.THREADS_POOL.add(offerParser);
-                    offerParser.start();
-                    offerParser.threadJoin();
+                    try {
+                        OfferParser offerParser = new OfferParser(anotherColorPage, false);
+                        SetsHolder.THREADS_POOL.add(offerParser);
+                        offerParser.start();
+                        offerParser.threadJoin();
+                    } catch (IOException e) {
+                        logger.error(e.getMessage());
+                        logger.error("Current thread didn't receive the http page with URL :   " + anotherColorPage);
+                    }
                 }
             }
         }

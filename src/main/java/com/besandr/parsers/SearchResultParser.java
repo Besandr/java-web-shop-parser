@@ -27,7 +27,7 @@ import java.util.List;
 
 
 public class SearchResultParser extends AbstractParser {
-    private static final Logger logger = LogManager.getLogger(OfferParser.class);
+    private static final Logger logger = LogManager.getLogger(SearchResultParser.class);
 
     private Document resultsPage;
     private boolean isThisFirstPage;
@@ -71,10 +71,15 @@ public class SearchResultParser extends AbstractParser {
     private void offerParseExecutor() {
         for (String offerPageURL : offerPages) {
             if (SetsHolder.OFFER_LINKS_SET.add(offerPageURL)) {
-                OfferParser offerParser = new OfferParser(offerPageURL, true);
-                SetsHolder.THREADS_POOL.add(offerParser);
-                offerParser.start();
-                offerParser.threadJoin();
+                try {
+                    OfferParser offerParser = new OfferParser(offerPageURL, true);
+                    SetsHolder.THREADS_POOL.add(offerParser);
+                    offerParser.start();
+                    offerParser.threadJoin();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    logger.error("Current thread didn't receive the http page with URL :   " + offerPageURL);
+                }
             }
         }
     }

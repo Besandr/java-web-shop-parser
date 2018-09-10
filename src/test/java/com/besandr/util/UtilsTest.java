@@ -20,4 +20,12 @@ public class UtilsTest {
         String expectedString = "EUR";
         Assert.assertEquals(expectedString, Utils.currencyDefiner(testString));
     }
+
+    @Test
+    public void stringFromStringsArrayTest() {
+        String[] testArray = {"test", "string"};
+        String resultString = Utils.stringFromStringsArray(testArray);
+        String expectedString = "test string ";
+        Assert.assertEquals(expectedString, resultString);
+    }
 }

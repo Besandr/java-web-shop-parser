@@ -3,6 +3,7 @@ package com.besandr.service;
 import com.besandr.util.Const;
 import com.besandr.util.SetsHolder;
 import com.besandr.parsers.SearchResultParser;
+import com.besandr.util.Utils;
 import com.besandr.util.resultwriters.XMLWriter;
 
 /**
@@ -13,10 +14,10 @@ import com.besandr.util.resultwriters.XMLWriter;
 
 public class ServiceParser{
 
-    private String keyword;
+    private String keywords;
 
-    public ServiceParser(String keyword) {
-        this.keyword = keyword;
+    public ServiceParser(String[] keywords) {
+        this.keywords = Utils.stringFromStringsArray(keywords);
     }
 
     public void go() {
@@ -24,7 +25,7 @@ public class ServiceParser{
         XMLWriter.writeHeaderElement();
 
         for (String category : Const.CATEGORIES) {
-            String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keyword + Const.CATEGORY_PARAM + category;
+            String searchRequest = Const.SITE_URL + Const.SEARCH_PARAM + keywords + Const.CATEGORY_PARAM + category;
             Thread searchResultParser = new SearchResultParser(searchRequest, true);
             SetsHolder.THREADS_POOL.add(searchResultParser);
             searchResultParser.start();

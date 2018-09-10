@@ -6,9 +6,6 @@ import java.math.BigDecimal;
 
 public class Utils {
 
-//    @Setter
-//    public static boolean cheating;
-
     public static int sleepTime(){
         return (int) (Math.random() * 1200) + 500;
     }
@@ -27,5 +24,13 @@ public class Utils {
     public static BigDecimal getCostFromString(String cost) {
         return new BigDecimal(cost.replaceAll("[^0-9,]*", "")
                 .replace("," , "."));
+    }
+
+    public static String stringFromStringsArray(String[] arr) {
+        StringBuilder result = new StringBuilder();
+        for (String s : arr) {
+            result.append(s).append(" ");
+        }
+        return result.toString();
     }
 }

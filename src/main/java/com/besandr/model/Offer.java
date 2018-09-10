@@ -4,9 +4,6 @@ package com.besandr.model;
 import com.besandr.model.properties.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 
 @Getter
 @Setter
@@ -23,7 +20,7 @@ public class Offer implements Cloneable {
     private ArticleID articleID;
     private ShippingCost shippingCost;
 
-    Offer(Name name, Brand brand, Color color, Size size, Price price, InitialPrice initialPrice, Currency currency, Description description, ArticleID articleID, ShippingCost shippingCost) {
+    public Offer(Name name, Brand brand, Color color, Size size, Price price, InitialPrice initialPrice, Currency currency, Description description, ArticleID articleID, ShippingCost shippingCost) {
         this.name = name;
         this.brand = brand;
         this.color = color;
