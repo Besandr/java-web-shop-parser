@@ -1,6 +1,8 @@
 package com.besandr.parsers;
 
 import com.besandr.service.AppSettings;
+import com.besandr.service.options.BotDetectionCheatingOption;
+import com.besandr.service.options.ConcurrencyOption;
 import com.besandr.util.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +11,7 @@ public abstract class AbstractParser extends Thread {
     private static final Logger logger = LogManager.getLogger(OfferParser.class);
 
     protected void startDelay() {
-        if (AppSettings.requesting_mode == AppSettings.REQ_MODE.LAZY) {
+        if (AppSettings.getBotDetectionCheating() == BotDetectionCheatingOption.ON) {
             try {
                 logger.debug("Waiting ....");
                 Thread.sleep(Utils.sleepTime());
@@ -20,7 +22,7 @@ public abstract class AbstractParser extends Thread {
     }
 
     protected void threadJoin() {
-        if (AppSettings.concurrency == AppSettings.CONC_MODE.ONE_THREAD) {
+        if (AppSettings.getConcurrency() == ConcurrencyOption.ONE_THREAD) {
             try {
                 super.join();
             } catch (InterruptedException e) {

@@ -3,7 +3,7 @@
 This app is a parser which extracts product information from the following web shop:
 http://www.aboutyou.de
 
-To do so the parser must be executed with a keyword as an argument. It extracts data which can be found on the shop website by typing the keyword into the
+To do so the parser must be executed with a keywords as an argument. It extracts data which can be found on the shop website by typing the keywords into the
 search bar. 
 
 Found parsed offers after parsing all offer pages stored in the /target/offers.xml
@@ -22,7 +22,7 @@ By default app starts in multi-thread mode with start delay in a 500-1200 millis
 
     cd target
 
-    java -jar java-webshop-parser-0.5-jar-with-dependencies.jar "keyword"
+    java -jar java-webshop-parser.jar "keywords"
     
 
  

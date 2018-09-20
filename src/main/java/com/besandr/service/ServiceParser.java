@@ -22,6 +22,8 @@ public class ServiceParser{
 
     public void go() {
 
+        AppSettings.setUpSettings();
+
         XMLWriter.writeHeaderElement();
 
         for (String category : Const.CATEGORIES) {

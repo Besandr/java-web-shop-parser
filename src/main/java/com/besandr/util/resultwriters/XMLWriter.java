@@ -6,16 +6,17 @@ import com.besandr.service.AppSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class XMLWriter {
     private static final Logger logger = LogManager.getLogger(XMLWriter.class);
 
 
     public static void writeHeaderElement() {
-        try (FileWriter writer = new FileWriter(AppSettings.targetFile)) {
+        try (Writer writer =
+                     new BufferedWriter(
+                             new OutputStreamWriter(
+                                     new FileOutputStream(AppSettings.targetFile), "UTF-8"))) {
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<offers>\n");
@@ -26,7 +27,10 @@ public class XMLWriter {
     }
 
     public static void writeOffer(Offer offer) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(AppSettings.targetFile, true))) {
+        try (Writer writer =
+                     new BufferedWriter(
+                             new OutputStreamWriter(
+                                     new FileOutputStream(AppSettings.targetFile, true), "UTF-8"))) {
 
             writer.write("    <offer>\n");
             for (Property property : offer.getAllProperties()) {
@@ -47,7 +51,10 @@ public class XMLWriter {
     }
 
     public static void writeEndElement() {
-        try (FileWriter writer = new FileWriter(AppSettings.targetFile, true)) {
+        try (Writer writer =
+                     new BufferedWriter(
+                             new OutputStreamWriter(
+                                     new FileOutputStream(AppSettings.targetFile, true), "UTF-8"))) {
 
             writer.write("</offers>\n");
 

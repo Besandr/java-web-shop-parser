@@ -28,7 +28,6 @@ public class SummaryPrinter {
 
     public static void startCollecting() {
         startTime = System.currentTimeMillis();
-        MemoryUsage.startControl();
     }
 
     public static void addHttpRequestAmount(int amount) {
