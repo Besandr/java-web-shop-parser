@@ -6,7 +6,7 @@
 
     <groupId>besandr</groupId>
     <artifactId>java-webshop-parser</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
 
     <packaging>jar</packaging>
     <properties>

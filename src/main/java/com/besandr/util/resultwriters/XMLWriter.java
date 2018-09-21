@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class XMLWriter {
     private static final Logger logger = LogManager.getLogger(XMLWriter.class);
@@ -16,7 +17,7 @@ public class XMLWriter {
         try (Writer writer =
                      new BufferedWriter(
                              new OutputStreamWriter(
-                                     new FileOutputStream(AppSettings.targetFile), "UTF-8"))) {
+                                     new FileOutputStream(AppSettings.targetFile), StandardCharsets.UTF_8))) {
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<offers>\n");
@@ -30,7 +31,7 @@ public class XMLWriter {
         try (Writer writer =
                      new BufferedWriter(
                              new OutputStreamWriter(
-                                     new FileOutputStream(AppSettings.targetFile, true), "UTF-8"))) {
+                                     new FileOutputStream(AppSettings.targetFile, true), StandardCharsets.UTF_8))) {
 
             writer.write("    <offer>\n");
             for (Property property : offer.getAllProperties()) {
@@ -54,11 +55,11 @@ public class XMLWriter {
         try (Writer writer =
                      new BufferedWriter(
                              new OutputStreamWriter(
-                                     new FileOutputStream(AppSettings.targetFile, true), "UTF-8"))) {
+                                     new FileOutputStream(AppSettings.targetFile, true), StandardCharsets.UTF_8))) {
 
             writer.write("</offers>\n");
 
-            logger.info("Offers have been written successfully\n");
+            logger.info("\nOffers have been written successfully\n");
 
         } catch (IOException e) {
             logger.error("Can't access to the target file");

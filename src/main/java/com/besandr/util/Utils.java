@@ -33,4 +33,8 @@ public class Utils {
         }
         return result.toString();
     }
+
+    public static void printProgressBar(){
+        System.out.print(String.format("\rParsing in process. [%d] offers have already been parsed", SetsHolder.offersCounter.get()));
+    }
 }

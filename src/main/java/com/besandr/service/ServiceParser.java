@@ -3,11 +3,12 @@ package com.besandr.service;
 import com.besandr.util.Const;
 import com.besandr.util.SetsHolder;
 import com.besandr.parsers.SearchResultParser;
+import com.besandr.util.ThreadsBarrier;
 import com.besandr.util.Utils;
 import com.besandr.util.resultwriters.XMLWriter;
 
 /**
- * ServiceParser receive keyword, and generates three search request URLs,
+ * ServiceParser receive keywords, and generates three search request URLs,
  * one for each search category.
  * After that it starts three threads for parsing it.
  */
@@ -32,5 +33,10 @@ public class ServiceParser{
             SetsHolder.THREADS_POOL.add(searchResultParser);
             searchResultParser.start();
         }
+
+        // Waiting for the ending of execution of all parsing threads
+        ThreadsBarrier.makeBarrier();
+
+        XMLWriter.writeEndElement();
     }
 }
