@@ -21,7 +21,7 @@ By default app starts in multi-thread mode with start delay in a 500-1200 millis
   
     cd java-web-shop-parser
 
-    mvn clean package
+    mvnw clean package
 
     cd target
 
