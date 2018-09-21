@@ -5,6 +5,9 @@ http://www.aboutyou.de
 
 To do so the parser must be executed with a keywords as an argument. It extracts data which can be found on the shop website by typing the keywords into the
 search bar. 
+The app extract all of the following properties for every offer (if applicable): Name, Brand, Color, Price, Initial Price, Currency, Description, ArticleID, Shipping Costs.
+
+Also it extract all available color and size combinations for one product as offer (every color and every size is a separate offer)
 
 Found parsed offers after parsing all offer pages stored in the /target/offers.xml
 
