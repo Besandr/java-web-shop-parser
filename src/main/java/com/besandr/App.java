@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * This app receives a keywords as first argument in the main method
  * and starts searching related offers on the site "https://www.aboutyou.de".
- * The app parses found offers and stores it in the /current directory/offers.xml
+ * The app parses founded offers and stores it in the /current directory/offers.xml
  *
  * App can try to cheat server bot detection by delaying the start of each thread with
  * random sleep time. Sleep time range sets in Utils.sleepTime() method. It also uses

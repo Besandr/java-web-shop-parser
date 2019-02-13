@@ -10,6 +10,11 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
+/**Size parser finds a tag which class attribute contains the fragment stored in Const.SIZE_KEY.
+ * There are sold out sizes in offers so parser checks out every size. If the size isn't sold out parser
+ * adds it to the list of sizes.
+ */
+
 public class SizeParser implements PropertyParser {
 
     @Override
@@ -26,7 +31,7 @@ public class SizeParser implements PropertyParser {
                 }
             }
         } else {
-            // If upper step didn't find sizes then offer has only one size (like lipstick, perfume or bag etc.)
+            // If previous step didn't find sizes then offer has only one size (like lipstick, perfume or bag etc.)
             // Lets find it
             sizeElements = offerPage.getElementsByAttributeValueContaining("class", Const.ONE_SIZE_KEY);
             if (!sizeElements.isEmpty()) {

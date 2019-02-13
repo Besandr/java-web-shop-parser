@@ -7,8 +7,11 @@ import com.besandr.util.Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-
+/**Price parser finds a tag which class attribute contains the fragment stored in Const.PRICE_KEY.
+ * After that parser take a text of this tag and extracts from it the price itself by Utils.getCostFromString method.
+ */
 public class PriceParser implements PropertyParser {
+
 
 
     @Override

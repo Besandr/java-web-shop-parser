@@ -34,7 +34,7 @@ public class OfferParser extends AbstractParser {
         this.isExtractionRequired = isExtractionRequired;
 
         this.offerURL = offerURL;
-        // Sometimes reading timeout not enough for getting the page.
+        // Sometimes reading timeout is not enough for getting the page.
         // So this loop makes ten tries to connect and get the http page
         // If all tries failed the run method will interrupt current thread
         for (int i = 0; offerPage == null && i < 10; i++) {
@@ -105,7 +105,14 @@ public class OfferParser extends AbstractParser {
 
         OfferWithSizes offerWithSizes = new OfferWithSizes();
         for (PropertyParser parser : AppSettings.propertiesList) {
-            offerWithSizes.setProperty(parser.parse(offerPage));
+            try {
+                offerWithSizes.setProperty(parser.parse(offerPage));
+            } catch (Exception e) {
+                logger.error("-------------------------");
+                logger.error(e.getClass() + " has been thrown.");
+                logger.error(parser.getClass().getSimpleName() + " can't parse the page: " + offerPage.baseUri());
+                logger.error("-------------------------");
+            }
         }
 
         offerWithSizes.save();

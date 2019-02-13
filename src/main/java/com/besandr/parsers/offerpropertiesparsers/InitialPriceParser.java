@@ -9,15 +9,18 @@ import org.jsoup.select.Elements;
 
 import java.math.BigDecimal;
 
+/**Initial price parser finds a tag which class attribute contains the fragment stored in Const.INITIAL_PRICE_KEY.
+ * Some offers doesn't have an initial price, so default return value is null
+ * But if it has, the initial price tag will contain text string with initial price
+ * And sometimes shop provides sales and writes several initial prices
+ * Parser iterates through them and chooses the maximal price
+ */
+
 public class InitialPriceParser implements PropertyParser {
 
     @Override
     public Property parse(Document offerPage){
         BigDecimal initialPrice = null;
-        // Some offers doesn't have an initial price, so default return value is null
-        // But if it has, the div tag will contain text string with initial price
-        // And sometimes shop provides sales and writes several initial prices
-        // Parser iterates through them and chooses the maximal price
         Elements initialPriceDiv = offerPage.getElementsByAttributeValueContaining("class", Const.INITIAL_PRICE_KEY);
         if (initialPriceDiv.size() != 0) {
             BigDecimal maxInitPrice = BigDecimal.ZERO;

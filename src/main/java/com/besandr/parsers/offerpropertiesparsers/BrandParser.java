@@ -6,14 +6,17 @@ import com.besandr.util.Const;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+/**Brand parser finds a tag with a class stored in Const.BRAND_CLASS
+ * This tags text contains brand&name with a pattern: "Produktinfos: offerBrand | offerName"
+ * Parser splits this string, removes a "Produktinfos:" part and receives a brand
+ */
+
 public class BrandParser implements PropertyParser {
 
     @Override
     public Property parse(Document offerPage) {
-        String brand;
+        String brand = null;
         Elements nameClass = offerPage.getElementsByClass(Const.BRAND_CLASS);
-        // Target brand&name text is always first (and single) element in Elements nameClass
-        // brand&name string parrern is: "Produktinfos: offerBrand | offerName"
         String[] brandAndName = nameClass.get(0).text().split("[|]");
         int colonIndex = brandAndName[0].indexOf(":");
         brand = brandAndName[0].substring(colonIndex + 1).trim();

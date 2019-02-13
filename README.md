@@ -9,14 +9,20 @@ The app extract all of the following properties for every offer (if applicable):
 
 Also it extract all available color and size combinations for one product as offer (every color and every size is a separate offer)
 
-Found parsed offers after parsing all offer pages stored in the /target/offers.xml
+Founded parsed offers after parsing all offer pages are stored in the /target/offers.xml
 
 App can try to cheat server bot detection by delaying the start of each thread with
 random sleep time. Sleep time range sets in Utils.sleepTime() method. It also uses
 only that type of requests to server which can be used by buyer.
+This settings can be changed in a *Settings.ini* file.
 By default app starts in multi-thread mode with start delay in a 500-1200 millis range
 
-# Run this application
+#Notice 
+The parser's work strongly depends on internal structure of wep page. So if the web-site designers changes an important for parser tags the parser won't work correctly
+Last revision of parser was made 13/02/2019
+
+#### Run this application
+````
     git clone https://github.com/Besandr/java-web-shop-parser.git
   
     cd java-web-shop-parser
