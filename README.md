@@ -18,8 +18,9 @@ This settings can be changed in a *Settings.ini* file.
 By default app starts in multi-thread mode with start delay in a 500-1200 millis range
 
 #Notice 
+
 The parser's work strongly depends on internal structure of wep page. So if the web-site designers changes an important for parser tags the parser won't work correctly
-Last revision of parser was made 13/02/2019
+Last revision of parser was made **13/02/2019**
 
 #### Run this application
 ````
